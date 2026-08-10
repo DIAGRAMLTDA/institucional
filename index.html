@@ -1176,7 +1176,7 @@
      a URL do "Web App" abaixo, em APPS_SCRIPT_URL. Veja o passo a
      passo no final deste arquivo (comentário grande).
   */
-  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQy2fDMn5AH9yTL59roW6KRpGAesj0ZtWS4k4eAbXtgAhoHmfqRjNArnez5UsNAe1B/exec";
+  var APPS_SCRIPT_URL = "https://diagram-leads.diagram-ltda.workers.dev";
   var LEAD_KEY = "diagram_lead_unlocked";
 
   function leadUnlocked() {
@@ -1194,8 +1194,6 @@
       email: form.email.value.trim(),
       site: form.site.value.trim(),
       redes: form.redes.value.trim(),
-      origem: window.location.href,
-      data: new Date().toISOString()
     };
   }
 
