@@ -831,6 +831,24 @@
   }
 
 
+
+  /* ===== DIAGNÓSTICO EM TELA + CAPA DE FINALIZAÇÃO ===== */
+  .diagnostic-modal{position:fixed;inset:0;z-index:99999;display:none;background:rgba(0,0,0,.94)}
+  .diagnostic-modal.open{display:flex}
+  .diagnostic-modal-shell{position:relative;width:100%;height:100%;background:#080808;overflow:hidden}
+  .diagnostic-modal-top{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.09);background:#080808;position:relative;z-index:3}
+  .diagnostic-modal-top strong{font-family:'Syne',sans-serif;font-size:.78rem;letter-spacing:.12em;color:#fff}
+  .diagnostic-modal-close{width:38px;height:38px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#fff;border-radius:50%;cursor:pointer;font-size:24px}
+  .diagnostic-modal-frame{position:absolute;top:58px;right:0;bottom:0;left:0;background:#fff}
+  .diagnostic-modal-frame iframe{display:block;width:100%;height:100%;min-height:calc(100vh - 58px);border:0}
+  .diagnostic-complete{position:absolute;inset:58px 0 0;z-index:10;display:none;align-items:center;justify-content:center;padding:28px 18px;overflow:auto;background:radial-gradient(circle at 50% 18%,rgba(200,144,106,.18),transparent 38%),rgba(5,5,5,.985)}
+  .diagnostic-complete.open{display:flex}
+  .diagnostic-complete-card{width:min(720px,100%);text-align:center;padding:clamp(34px,6vw,64px) clamp(24px,6vw,62px);border:1px solid rgba(200,144,106,.25);border-radius:22px;background:rgba(14,14,14,.96);box-shadow:0 30px 100px rgba(0,0,0,.65)}
+  .diagnostic-complete-check{width:66px;height:66px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(200,144,106,.65);color:#e1ae87;font-size:28px}
+  .diagnostic-complete-label{color:#e1ae87;font-size:.72rem;letter-spacing:.16em;font-weight:700;margin-bottom:14px}
+  .diagnostic-complete h2{font-family:'Syne',sans-serif;color:#fff;font-size:clamp(1.65rem,4vw,2.6rem);line-height:1.08;margin:0 0 22px}
+  .diagnostic-complete p{color:rgba(255,255,255,.70);line-height:1.8;font-size:.98rem;margin:0 auto 30px;max-width:610px}
+  .diagnostic-complete a{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:4px;background:#c8906a;color:#080808;text-decoration:none;font-weight:800;letter-spacing:.04em}
   /* ===== Página final do diagnóstico ===== */
   .diagnosis-thanks {
     min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;
@@ -1365,6 +1383,27 @@
   </div>
 </section>
 
+<!-- DIAGNÓSTICO EM MODAL -->
+<div class="diagnostic-modal" id="diagnosticModal" aria-hidden="true">
+  <div class="diagnostic-modal-shell">
+    <div class="diagnostic-modal-top">
+      <strong>DIAGRAM · DIAGNÓSTICO ESTRATÉGICO</strong>
+      <button class="diagnostic-modal-close" id="diagnosticModalClose" type="button" aria-label="Fechar diagnóstico">×</button>
+    </div>
+    <div class="diagnostic-modal-frame">
+      <iframe id="diagnosticModalFrame" src="https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" title="Diagnóstico Estratégico Gratuito — DIAGRAM" loading="eager"></iframe>
+    </div>
+    <div class="diagnostic-complete" id="diagnosticComplete" aria-hidden="true">
+      <div class="diagnostic-complete-card">
+        <div class="diagnostic-complete-check">✓</div>
+        <div class="diagnostic-complete-label">FORMULÁRIO ENVIADO!</div>
+        <h2>Diagnóstico recebido.</h2>
+        <p>Para entendermos melhor o momento atual da sua empresa e identificarmos oportunidades de crescimento, preparamos um Diagnóstico Estratégico Gratuito.<br><br>Assim que você concluir, nossa equipe irá analisar as informações e entrar em contato para apresentar os principais pontos identificados.</p>
+        <a href="https://tintim.link/whatsapp/b330379f-479c-4f01-b9cb-a5d3f3b78c4b/06496198-add4-4153-a4d8-88b6b6239386" target="_blank" rel="noopener">CLIQUE E FALE CONOSCO →</a>
+      </div>
+    </div>
+  </div>
+</div>
 <footer>
   <div>
     <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.82rem;letter-spacing:0.1em;color:var(--white)">DIAGRAM</span>
@@ -1466,29 +1505,48 @@
     });
   }
 
-  /* ---- Modal global (links que abrem o Tally em nova aba) ---- */
-  var pendingHref = null;
+  /* ---- Diagnóstico: abre na própria página ---- */
+  var pendingHref = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
   var leadBackdrop = document.getElementById('leadGateBackdrop');
   var globalLeadForm = document.getElementById('globalLeadForm');
+  var diagnosticModal = document.getElementById('diagnosticModal');
+  var diagnosticModalFrame = document.getElementById('diagnosticModalFrame');
+  var diagnosticComplete = document.getElementById('diagnosticComplete');
 
-  function openLeadGate(href) {
-    pendingHref = href;
+  function openDiagnostic(){
+    if (!diagnosticModal) return;
+    diagnosticComplete.classList.remove('open');
+    diagnosticComplete.setAttribute('aria-hidden','true');
+    diagnosticModalFrame.src = pendingHref;
+    diagnosticModal.classList.add('open');
+    diagnosticModal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeDiagnostic(){
+    if (!diagnosticModal) return;
+    diagnosticModal.classList.remove('open');
+    diagnosticModal.setAttribute('aria-hidden','true');
+    diagnosticModalFrame.src='about:blank';
+    document.body.style.overflow='';
+  }
+  function openLeadGate(href){
+    pendingHref="https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
     leadBackdrop.classList.add('open');
   }
-  function closeLeadGate() {
+  function closeLeadGate(){
     leadBackdrop.classList.remove('open');
-    pendingHref = null;
   }
-  document.getElementById('leadGateClose').addEventListener('click', closeLeadGate);
-  leadBackdrop.addEventListener('click', function(e) {
-    if (e.target === leadBackdrop) closeLeadGate();
-  });
 
-  document.querySelectorAll('a[href*="tally.so"]').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      if (leadUnlocked()) return; // já liberado nesta sessão, segue o link normalmente
+  document.getElementById('leadGateClose').addEventListener('click',closeLeadGate);
+  leadBackdrop.addEventListener('click',function(e){if(e.target===leadBackdrop)closeLeadGate();});
+  document.getElementById('diagnosticModalClose').addEventListener('click',closeDiagnostic);
+
+  document.querySelectorAll('a[href*="tally.so"]').forEach(function(a){
+    a.addEventListener('click',function(e){
       e.preventDefault();
-      openLeadGate(a.getAttribute('href'));
+      e.stopPropagation();
+      if(leadUnlocked()) openDiagnostic();
+      else openLeadGate(a.getAttribute('href'));
     });
   });
 
@@ -1509,7 +1567,7 @@
         statusEl.style.display = 'none';
         btn.disabled = false;
         globalLeadForm.reset();
-        if (pendingHref) window.open(pendingHref, '_blank');
+        openDiagnostic();
         // libera também o formulário embutido na seção de contato
         var embedGate = document.getElementById('embedGate');
         if (embedGate) embedGate.style.display = 'none';
@@ -1550,6 +1608,14 @@
       });
     });
   }
+
+  /* Evento oficial do Tally: disparado na página pai após envio bem-sucedido. */
+  window.addEventListener('Tally.FormSubmitted', function(){
+    if (diagnosticModal && diagnosticModal.classList.contains('open')) {
+      diagnosticComplete.classList.add('open');
+      diagnosticComplete.setAttribute('aria-hidden','false');
+    }
+  });
 </script>
 
 <!--
