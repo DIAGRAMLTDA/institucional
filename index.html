@@ -792,7 +792,15 @@
   .video-case h3 { margin: 0 0 8px; font-family: 'Syne',sans-serif; font-size: 1.22rem; color: #fff; }
   .video-case p { margin: 0; color: rgba(255,255,255,.55); font-size: .88rem; line-height: 1.6; }
   .accent-word { color: var(--gold-light); }
-  .video-cases-head .section-title { font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.08; }
+  /* Ajuste desktop: o max-width global de .section-title (540px) fazia o título quebrar em excesso. */
+  .video-cases-head .section-title {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 18px;
+    font-size: clamp(2rem, 4.2vw, 3.25rem);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
   .video-cases-footer { max-width: 1180px; margin: 48px auto 0; position: relative; z-index: 1; }
   .video-niche-bar { display:grid; grid-template-columns: 1.25fr repeat(5, 1fr) 1.2fr; align-items:center; gap:0; padding:24px 26px; border-top:1px solid rgba(255,255,255,.09); border-bottom:1px solid rgba(255,255,255,.09); background:rgba(255,255,255,.015); }
   .video-niche-intro { display:flex; align-items:center; gap:14px; padding-right:24px; }
