@@ -831,24 +831,6 @@
   }
 
 
-
-  /* ===== DIAGNÓSTICO EM TELA + CAPA DE FINALIZAÇÃO ===== */
-  .diagnostic-modal{position:fixed;inset:0;z-index:99999;display:none;background:rgba(0,0,0,.94)}
-  .diagnostic-modal.open{display:flex}
-  .diagnostic-modal-shell{position:relative;width:100%;height:100%;background:#080808;overflow:hidden}
-  .diagnostic-modal-top{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.09);background:#080808;position:relative;z-index:3}
-  .diagnostic-modal-top strong{font-family:'Syne',sans-serif;font-size:.78rem;letter-spacing:.12em;color:#fff}
-  .diagnostic-modal-close{width:38px;height:38px;border:1px solid rgba(255,255,255,.14);background:transparent;color:#fff;border-radius:50%;cursor:pointer;font-size:24px}
-  .diagnostic-modal-frame{position:absolute;top:58px;right:0;bottom:0;left:0;background:#fff}
-  .diagnostic-modal-frame iframe{display:block;width:100%;height:100%;min-height:calc(100vh - 58px);border:0}
-  .diagnostic-complete{position:absolute;inset:58px 0 0;z-index:10;display:none;align-items:center;justify-content:center;padding:28px 18px;overflow:auto;background:radial-gradient(circle at 50% 18%,rgba(200,144,106,.18),transparent 38%),rgba(5,5,5,.985)}
-  .diagnostic-complete.open{display:flex}
-  .diagnostic-complete-card{width:min(720px,100%);text-align:center;padding:clamp(34px,6vw,64px) clamp(24px,6vw,62px);border:1px solid rgba(200,144,106,.25);border-radius:22px;background:rgba(14,14,14,.96);box-shadow:0 30px 100px rgba(0,0,0,.65)}
-  .diagnostic-complete-check{width:66px;height:66px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(200,144,106,.65);color:#e1ae87;font-size:28px}
-  .diagnostic-complete-label{color:#e1ae87;font-size:.72rem;letter-spacing:.16em;font-weight:700;margin-bottom:14px}
-  .diagnostic-complete h2{font-family:'Syne',sans-serif;color:#fff;font-size:clamp(1.65rem,4vw,2.6rem);line-height:1.08;margin:0 0 22px}
-  .diagnostic-complete p{color:rgba(255,255,255,.70);line-height:1.8;font-size:.98rem;margin:0 auto 30px;max-width:610px}
-  .diagnostic-complete a{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:4px;background:#c8906a;color:#080808;text-decoration:none;font-weight:800;letter-spacing:.04em}
   /* ===== Página final do diagnóstico ===== */
   .diagnosis-thanks {
     min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;
@@ -883,6 +865,25 @@
     .whatsapp-recovery{align-items:stretch; flex-direction:column;} .whatsapp-recovery a{justify-content:center;}
   }
 
+
+/* ===== DIAGNÓSTICO: MODAL INTERNO ===== */
+.diagnostic-modal{position:fixed;inset:0;z-index:100000;display:none;background:rgba(0,0,0,.96)}
+.diagnostic-modal.open{display:flex;align-items:stretch;justify-content:center}
+.diagnostic-shell{position:relative;width:100%;height:100%;background:#fff;overflow:hidden}
+.diagnostic-bar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#0D0D0D;border-bottom:1px solid #2A2A2A;position:relative;z-index:3}
+.diagnostic-bar strong{font-family:'Syne',sans-serif;font-size:12px;letter-spacing:.12em;color:#F5F0EB}
+.diagnostic-close{width:38px;height:38px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#fff;border-radius:50%;cursor:pointer;font-size:24px;line-height:1}
+.diagnostic-frame-wrap{position:absolute;top:58px;left:0;right:0;bottom:0;background:#fff}
+.diagnostic-frame{display:block;width:100%;height:100%;border:0;background:#fff}
+.diagnostic-complete{position:absolute;top:58px;left:0;right:0;bottom:0;z-index:5;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 15%,rgba(200,144,106,.20),transparent 38%),#080808;overflow:auto}
+.diagnostic-complete.open{display:flex}
+.diagnostic-complete-card{width:min(720px,100%);padding:48px 34px;text-align:center;border:1px solid rgba(200,144,106,.35);border-radius:20px;background:#111;box-shadow:0 30px 90px rgba(0,0,0,.65)}
+.diagnostic-complete-check{width:62px;height:62px;margin:0 auto 20px;border:1px solid #C8906A;border-radius:50%;display:grid;place-items:center;color:#C8906A;font-size:30px}
+.diagnostic-complete-label{font-family:'Syne',sans-serif;color:#C8906A;font-weight:800;font-size:12px;letter-spacing:.16em;margin-bottom:14px}
+.diagnostic-complete-card h2{font-family:'Syne',sans-serif;color:#F5F0EB;font-size:clamp(24px,4vw,38px);margin-bottom:18px}
+.diagnostic-complete-card p{color:#B9B3AE;font-size:15px;line-height:1.8;max-width:610px;margin:0 auto 28px}
+.diagnostic-complete-card a{display:inline-flex;align-items:center;justify-content:center;padding:14px 24px;background:#C8906A;color:#0D0D0D;text-decoration:none;border-radius:4px;font-family:'Syne',sans-serif;font-weight:800;letter-spacing:.04em}
+@media(max-width:600px){.diagnostic-bar{padding:0 14px}.diagnostic-bar strong{font-size:10px}.diagnostic-complete-card{padding:38px 22px}.diagnostic-complete-card p{font-size:14px}}
 </style>
 
 <!-- Tintim — rastreamento de leads e WhatsApp -->
@@ -903,6 +904,9 @@
     })(window, document, '//s.tintim.app/static/core/tintim-1.0.js');
 </script>
 
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2248%22%20fill%3D%22%230D0D0D%22%20stroke%3D%22%23C8906A%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M28%2022H24c-2.2%200-4%201.8-4%204v4M72%2022h4c2.2%200%204%201.8%204%204v4M28%2078H24c-2.2%200-4-1.8-4-4v-4M72%2078h4c2.2%200%204-1.8%204-4v-4%22%20fill%3D%22none%22%20stroke%3D%22%23C8906A%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2230%22%20y%3D%2238%22%20width%3D%229%22%20height%3D%2224%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3Crect%20x%3D%2245%22%20y%3D%2231%22%20width%3D%229%22%20height%3D%2231%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3Crect%20x%3D%2260%22%20y%3D%2225%22%20width%3D%229%22%20height%3D%2237%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3C%2Fsvg%3E">
+<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2248%22%20fill%3D%22%230D0D0D%22%20stroke%3D%22%23C8906A%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M28%2022H24c-2.2%200-4%201.8-4%204v4M72%2022h4c2.2%200%204%201.8%204%204v4M28%2078H24c-2.2%200-4-1.8-4-4v-4M72%2078h4c2.2%200%204-1.8%204-4v-4%22%20fill%3D%22none%22%20stroke%3D%22%23C8906A%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2230%22%20y%3D%2238%22%20width%3D%229%22%20height%3D%2224%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3Crect%20x%3D%2245%22%20y%3D%2231%22%20width%3D%229%22%20height%3D%2231%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3Crect%20x%3D%2260%22%20y%3D%2225%22%20width%3D%229%22%20height%3D%2237%22%20rx%3D%221%22%20fill%3D%22%23C8906A%22%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#0D0D0D">
 </head>
 <body>
 
@@ -1383,27 +1387,6 @@
   </div>
 </section>
 
-<!-- DIAGNÓSTICO EM MODAL -->
-<div class="diagnostic-modal" id="diagnosticModal" aria-hidden="true">
-  <div class="diagnostic-modal-shell">
-    <div class="diagnostic-modal-top">
-      <strong>DIAGRAM · DIAGNÓSTICO ESTRATÉGICO</strong>
-      <button class="diagnostic-modal-close" id="diagnosticModalClose" type="button" aria-label="Fechar diagnóstico">×</button>
-    </div>
-    <div class="diagnostic-modal-frame">
-      <iframe id="diagnosticModalFrame" src="https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" title="Diagnóstico Estratégico Gratuito — DIAGRAM" loading="eager"></iframe>
-    </div>
-    <div class="diagnostic-complete" id="diagnosticComplete" aria-hidden="true">
-      <div class="diagnostic-complete-card">
-        <div class="diagnostic-complete-check">✓</div>
-        <div class="diagnostic-complete-label">FORMULÁRIO ENVIADO!</div>
-        <h2>Diagnóstico recebido.</h2>
-        <p>Para entendermos melhor o momento atual da sua empresa e identificarmos oportunidades de crescimento, preparamos um Diagnóstico Estratégico Gratuito.<br><br>Assim que você concluir, nossa equipe irá analisar as informações e entrar em contato para apresentar os principais pontos identificados.</p>
-        <a href="https://tintim.link/whatsapp/b330379f-479c-4f01-b9cb-a5d3f3b78c4b/06496198-add4-4153-a4d8-88b6b6239386" target="_blank" rel="noopener">CLIQUE E FALE CONOSCO →</a>
-      </div>
-    </div>
-  </div>
-</div>
 <footer>
   <div>
     <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.82rem;letter-spacing:0.1em;color:var(--white)">DIAGRAM</span>
@@ -1424,6 +1407,28 @@
       <path d="M22.406 19.479c-.301-.15-1.777-.876-2.053-.976-.275-.1-.476-.15-.676.15-.2.3-.775.975-.95 1.176-.175.2-.35.225-.65.075-.301-.15-1.27-.469-2.42-1.49-.894-.795-1.496-1.775-1.672-2.075-.175-.3-.019-.462.132-.61.135-.132.3-.344.45-.519.15-.175.2-.3.3-.5.1-.2.05-.375-.025-.525-.075-.15-.675-1.625-.925-2.225-.243-.585-.49-.505-.676-.514a12.07 12.07 0 00-.574-.011c-.2 0-.525.075-.8.375-.275.3-1.05 1.025-1.05 2.5s1.075 2.9 1.225 3.1c.15.2 2.112 3.225 5.12 4.52.715.31 1.273.494 1.708.633.717.228 1.37.196 1.886.119.575-.086 1.777-.727 2.026-1.428.25-.7.25-1.3.175-1.426-.075-.125-.275-.2-.575-.35z" fill="#25D366"/>
     </svg>
   </a>
+</div>
+
+
+<div class="diagnostic-modal" id="diagnosticModal" aria-hidden="true">
+  <div class="diagnostic-shell">
+    <div class="diagnostic-bar">
+      <strong>DIAGRAM · DIAGNÓSTICO ESTRATÉGICO</strong>
+      <button type="button" class="diagnostic-close" id="diagnosticClose" aria-label="Fechar diagnóstico">×</button>
+    </div>
+    <div class="diagnostic-frame-wrap">
+      <iframe id="diagnosticFrame" class="diagnostic-frame" title="Diagnóstico Estratégico Gratuito — DIAGRAM" loading="eager" src="about:blank"></iframe>
+    </div>
+    <div class="diagnostic-complete" id="diagnosticComplete" aria-hidden="true">
+      <div class="diagnostic-complete-card">
+        <div class="diagnostic-complete-check">✓</div>
+        <div class="diagnostic-complete-label">FORMULÁRIO ENVIADO!</div>
+        <h2>Diagnóstico recebido.</h2>
+        <p>Para entendermos melhor o momento atual da sua empresa e identificarmos oportunidades de crescimento, preparamos um Diagnóstico Estratégico Gratuito.<br><br>Assim que você concluir, nossa equipe irá analisar as informações e entrar em contato para apresentar os principais pontos identificados.</p>
+        <a href="https://tintim.link/whatsapp/b330379f-479c-4f01-b9cb-a5d3f3b78c4b/06496198-add4-4153-a4d8-88b6b6239386" target="_blank" rel="noopener">CLIQUE E FALE CONOSCO →</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="lead-gate-backdrop" id="leadGateBackdrop">
@@ -1505,113 +1510,103 @@
     });
   }
 
-  /* ---- Diagnóstico: abre na própria página ---- */
-  var pendingHref = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+  /* ---- Diagnóstico: sempre permanece na própria página ---- */
+  var TALLY_EMBED_URL = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1";
+  var pendingHref = TALLY_EMBED_URL;
   var leadBackdrop = document.getElementById('leadGateBackdrop');
   var globalLeadForm = document.getElementById('globalLeadForm');
   var diagnosticModal = document.getElementById('diagnosticModal');
-  var diagnosticModalFrame = document.getElementById('diagnosticModalFrame');
+  var diagnosticFrame = document.getElementById('diagnosticFrame');
   var diagnosticComplete = document.getElementById('diagnosticComplete');
 
   function openDiagnostic(){
-    if (!diagnosticModal) return;
+    if(!diagnosticModal || !diagnosticFrame) return;
     diagnosticComplete.classList.remove('open');
     diagnosticComplete.setAttribute('aria-hidden','true');
-    diagnosticModalFrame.src = pendingHref;
+    diagnosticFrame.src=TALLY_EMBED_URL;
     diagnosticModal.classList.add('open');
     diagnosticModal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
   }
   function closeDiagnostic(){
-    if (!diagnosticModal) return;
+    if(!diagnosticModal) return;
     diagnosticModal.classList.remove('open');
     diagnosticModal.setAttribute('aria-hidden','true');
-    diagnosticModalFrame.src='about:blank';
+    diagnosticFrame.src='about:blank';
     document.body.style.overflow='';
   }
-  function openLeadGate(href){
-    pendingHref="https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+  function openLeadGate(){
+    pendingHref=TALLY_EMBED_URL;
     leadBackdrop.classList.add('open');
   }
   function closeLeadGate(){
     leadBackdrop.classList.remove('open');
+    pendingHref=null;
   }
 
   document.getElementById('leadGateClose').addEventListener('click',closeLeadGate);
   leadBackdrop.addEventListener('click',function(e){if(e.target===leadBackdrop)closeLeadGate();});
-  document.getElementById('diagnosticModalClose').addEventListener('click',closeDiagnostic);
+  document.getElementById('diagnosticClose').addEventListener('click',closeDiagnostic);
 
-  document.querySelectorAll('a[href*="tally.so"]').forEach(function(a){
-    a.addEventListener('click',function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if(leadUnlocked()) openDiagnostic();
-      else openLeadGate(a.getAttribute('href'));
-    });
-  });
-
-  globalLeadForm.addEventListener('submit', function(e) {
+  /* CAPTURE=true: bloqueia qualquer navegação para tally.so antes dos outros handlers. */
+  document.addEventListener('click',function(e){
+    var a=e.target.closest ? e.target.closest('a[href*="tally.so"]') : null;
+    if(!a) return;
     e.preventDefault();
-    var btn = globalLeadForm.querySelector('button[type="submit"]');
-    var errorEl = globalLeadForm.querySelector('.lead-error');
-    var statusEl = globalLeadForm.querySelector('.lead-status');
-    errorEl.style.display = 'none';
-    btn.disabled = true;
-    var data = collectLeadData(globalLeadForm);
-    sendLeadToSheet(data).then(function() {
+    e.stopImmediatePropagation();
+    if(leadUnlocked()) openDiagnostic();
+    else openLeadGate();
+  },true);
+
+  globalLeadForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var btn=globalLeadForm.querySelector('button[type="submit"]');
+    var errorEl=globalLeadForm.querySelector('.lead-error');
+    var statusEl=globalLeadForm.querySelector('.lead-status');
+    errorEl.style.display='none';
+    btn.disabled=true;
+    var data=collectLeadData(globalLeadForm);
+    sendLeadToSheet(data).then(function(){
       setLeadUnlocked();
-      statusEl.textContent = "Pronto! Abrindo seu diagnóstico...";
-      statusEl.style.display = 'block';
-      setTimeout(function() {
+      statusEl.textContent='Pronto! Abrindo seu diagnóstico...';
+      statusEl.style.display='block';
+      setTimeout(function(){
         closeLeadGate();
-        statusEl.style.display = 'none';
-        btn.disabled = false;
+        statusEl.style.display='none';
+        btn.disabled=false;
         globalLeadForm.reset();
+        var embedGate=document.getElementById('embedGate');
+        if(embedGate) embedGate.style.display='none';
         openDiagnostic();
-        // libera também o formulário embutido na seção de contato
-        var embedGate = document.getElementById('embedGate');
-        if (embedGate) embedGate.style.display = 'none';
-      }, 500);
-    }).catch(function() {
-      btn.disabled = false;
-      errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
-      errorEl.style.display = 'block';
+      },400);
+    }).catch(function(){
+      btn.disabled=false;
+      errorEl.textContent='Não foi possível enviar agora. Tente novamente.';
+      errorEl.style.display='block';
     });
   });
 
-  /* ---- Overlay sobre o formulário embutido (seção de contato) ---- */
-  var embedGate = document.getElementById('embedGate');
-  var embedLeadForm = document.getElementById('embedLeadForm');
-
-  if (leadUnlocked() && embedGate) embedGate.style.display = 'none';
-
-  if (embedLeadForm) {
-    embedLeadForm.addEventListener('submit', function(e) {
+  /* Overlay sobre o formulário embutido da seção de contato. */
+  var embedGate=document.getElementById('embedGate');
+  var embedLeadForm=document.getElementById('embedLeadForm');
+  if(leadUnlocked() && embedGate) embedGate.style.display='none';
+  if(embedLeadForm){
+    embedLeadForm.addEventListener('submit',function(e){
       e.preventDefault();
-      var btn = embedLeadForm.querySelector('button[type="submit"]');
-      var errorEl = embedLeadForm.querySelector('.lead-error');
-      var statusEl = embedLeadForm.querySelector('.lead-status');
-      errorEl.style.display = 'none';
-      btn.disabled = true;
-      var data = collectLeadData(embedLeadForm);
-      sendLeadToSheet(data).then(function() {
-        setLeadUnlocked();
-        statusEl.textContent = "Pronto! Liberando o formulário...";
-        statusEl.style.display = 'block';
-        setTimeout(function() {
-          embedGate.style.display = 'none';
-        }, 500);
-      }).catch(function() {
-        btn.disabled = false;
-        errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
-        errorEl.style.display = 'block';
-      });
+      var btn=embedLeadForm.querySelector('button[type="submit"]');
+      var errorEl=embedLeadForm.querySelector('.lead-error');
+      var statusEl=embedLeadForm.querySelector('.lead-status');
+      errorEl.style.display='none'; btn.disabled=true;
+      sendLeadToSheet(collectLeadData(embedLeadForm)).then(function(){
+        setLeadUnlocked(); statusEl.textContent='Pronto! Liberando o formulário...'; statusEl.style.display='block';
+        setTimeout(function(){embedGate.style.display='none';},400);
+      }).catch(function(){btn.disabled=false; errorEl.textContent='Não foi possível enviar agora. Tente novamente.'; errorEl.style.display='block';});
     });
   }
 
-  /* Evento oficial do Tally: disparado na página pai após envio bem-sucedido. */
-  window.addEventListener('Tally.FormSubmitted', function(){
-    if (diagnosticModal && diagnosticModal.classList.contains('open')) {
+  /* Evento oficial do Tally após envio. */
+  window.addEventListener('Tally.FormSubmitted',function(){
+    if(diagnosticModal && diagnosticModal.classList.contains('open')){
       diagnosticComplete.classList.add('open');
       diagnosticComplete.setAttribute('aria-hidden','false');
     }
