@@ -730,6 +730,17 @@
     }
   }
 
+  /* ===== Compatibilidade e exibição dos vídeos ===== */
+  .video-cases-section video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    background: #000;
+    border-radius: 18px;
+    object-fit: contain;
+  }
+
   /* ===== Cases em vídeo — nichos ===== */
   .video-cases-section {
     position: relative;
@@ -999,8 +1010,15 @@
   <div class="video-cases-grid">
     <article class="video-case">
       <div class="video-frame">
-        <video controls preload="metadata" playsinline poster="" aria-label="Case de campanha para o nicho de tatuagem">
-          <source src="tattoo.mp4" type="video/mp4">
+        <video
+          src="https://www.diagramltda.com/tattoo.mp4"
+          controls
+          playsinline
+          muted
+          preload="metadata"
+          type="video/mp4"
+          aria-label="Case de campanha para o nicho de tatuagem">
+          <source src="https://www.diagramltda.com/tattoo.mp4" type="video/mp4">
           Seu navegador não suporta vídeos HTML5.
         </video>
       </div>
@@ -1013,8 +1031,15 @@
 
     <article class="video-case">
       <div class="video-frame">
-        <video controls preload="metadata" playsinline aria-label="Case de campanha para o nicho de estética">
-          <source src="estetica.mp4" type="video/mp4">
+        <video
+          src="https://www.diagramltda.com/estetica.mp4"
+          controls
+          playsinline
+          muted
+          preload="metadata"
+          type="video/mp4"
+          aria-label="Case de campanha para o nicho de estética">
+          <source src="https://www.diagramltda.com/estetica.mp4" type="video/mp4">
           Seu navegador não suporta vídeos HTML5.
         </video>
       </div>
@@ -1027,8 +1052,15 @@
 
     <article class="video-case">
       <div class="video-frame">
-        <video controls preload="metadata" playsinline aria-label="Case de campanha para o nicho de advocacia">
-          <source src="advocacia.mp4" type="video/mp4">
+        <video
+          src="https://www.diagramltda.com/advocacia.mp4"
+          controls
+          playsinline
+          muted
+          preload="metadata"
+          type="video/mp4"
+          aria-label="Case de campanha para o nicho de advocacia">
+          <source src="https://www.diagramltda.com/advocacia.mp4" type="video/mp4">
           Seu navegador não suporta vídeos HTML5.
         </video>
       </div>
