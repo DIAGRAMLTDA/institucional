@@ -583,6 +583,123 @@
   .lead-form .lead-error { color: #e08080; font-size: 0.75rem; margin-top: 10px; display: none; }
   .lead-form .lead-status { font-size: 0.75rem; color: var(--gold-light); margin-top: 10px; display: none; }
 
+  /* ===== DIAGNÓSTICO EM TELA / MODAL ===== */
+  .diagnostic-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: none;
+    align-items: stretch;
+    justify-content: center;
+    background: rgba(5,5,5,0.97);
+    backdrop-filter: blur(8px);
+  }
+  .diagnostic-modal.open { display: flex; }
+  .diagnostic-modal-inner {
+    width: min(100%, 1100px);
+    height: 100%;
+    position: relative;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+  }
+  .diagnostic-modal-bar {
+    min-height: 58px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,13,13,0.96);
+    position: relative;
+    z-index: 2;
+  }
+  .diagnostic-modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .diagnostic-modal-close {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--white);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .diagnostic-frame-wrap {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .diagnostic-frame-wrap iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: 0;
+    display: block;
+    background: var(--black);
+  }
+  .diagnostic-success {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 22px;
+    background: rgba(13,13,13,0.985);
+  }
+  .diagnostic-success.open { display: flex; }
+  .diagnostic-success-card {
+    width: min(680px, 100%);
+    padding: 46px 34px;
+    border: 1px solid var(--border);
+    background: linear-gradient(145deg, rgba(26,26,26,.98), rgba(13,13,13,.98));
+    border-radius: 10px;
+    box-shadow: 0 30px 90px rgba(0,0,0,.55);
+  }
+  .diagnostic-success-mark {
+    width: 58px; height: 58px;
+    margin: 0 auto 22px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold-light);
+    font-size: 25px;
+  }
+  .diagnostic-success-card .section-label { margin-bottom: 10px; }
+  .diagnostic-success-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.55rem, 4vw, 2.25rem);
+    line-height: 1.12;
+    margin-bottom: 18px;
+  }
+  .diagnostic-success-card h2 span { color: var(--gold-light); }
+  .diagnostic-success-card p {
+    max-width: 580px;
+    margin: 0 auto 26px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .diagnostic-success-card .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  @media (max-width: 640px) {
+    .diagnostic-modal-bar { padding: 10px 14px; }
+    .diagnostic-success-card { padding: 34px 20px; }
+    .diagnostic-success-card p { font-size: .88rem; }
+  }
+
   footer {
     padding: 26px 48px;
     border-top: 1px solid var(--border);
@@ -1466,29 +1583,54 @@
     });
   }
 
-  /* ---- Modal global (links que abrem o Tally em nova aba) ---- */
-  var pendingHref = null;
+  /* ---- Diagnóstico: sempre abre dentro da própria página ---- */
+  var pendingHref = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
   var leadBackdrop = document.getElementById('leadGateBackdrop');
   var globalLeadForm = document.getElementById('globalLeadForm');
+  var diagnosticModal = document.getElementById('diagnosticModal');
+  var diagnosticFrame = document.getElementById('diagnosticFrame');
+  var diagnosticSuccess = document.getElementById('diagnosticSuccess');
+  var diagnosticModalClose = document.getElementById('diagnosticModalClose');
 
-  function openLeadGate(href) {
-    pendingHref = href;
+  function openDiagnosticModal() {
+    diagnosticSuccess.classList.remove('open');
+    diagnosticFrame.src = pendingHref;
+    diagnosticModal.classList.add('open');
+    diagnosticModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDiagnosticModal() {
+    diagnosticModal.classList.remove('open');
+    diagnosticModal.setAttribute('aria-hidden', 'true');
+    diagnosticFrame.src = 'about:blank';
+    document.body.style.overflow = '';
+  }
+
+  function openLeadGate() {
     leadBackdrop.classList.add('open');
   }
   function closeLeadGate() {
     leadBackdrop.classList.remove('open');
-    pendingHref = null;
   }
+
   document.getElementById('leadGateClose').addEventListener('click', closeLeadGate);
   leadBackdrop.addEventListener('click', function(e) {
     if (e.target === leadBackdrop) closeLeadGate();
   });
+  diagnosticModalClose.addEventListener('click', closeDiagnosticModal);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && diagnosticModal.classList.contains('open')) closeDiagnosticModal(); });
 
+  // Todos os botões/links de diagnóstico permanecem na página.
   document.querySelectorAll('a[href*="tally.so"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
-      if (leadUnlocked()) return; // já liberado nesta sessão, segue o link normalmente
       e.preventDefault();
-      openLeadGate(a.getAttribute('href'));
+      pendingHref = 'https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1';
+      if (leadUnlocked()) {
+        openDiagnosticModal();
+      } else {
+        openLeadGate();
+      }
     });
   });
 
@@ -1502,18 +1644,15 @@
     var data = collectLeadData(globalLeadForm);
     sendLeadToSheet(data).then(function() {
       setLeadUnlocked();
-      statusEl.textContent = "Pronto! Abrindo seu diagnóstico...";
+      statusEl.textContent = "Pronto! Abrindo o diagnóstico...";
       statusEl.style.display = 'block';
       setTimeout(function() {
         closeLeadGate();
         statusEl.style.display = 'none';
         btn.disabled = false;
         globalLeadForm.reset();
-        if (pendingHref) window.open(pendingHref, '_blank');
-        // libera também o formulário embutido na seção de contato
-        var embedGate = document.getElementById('embedGate');
-        if (embedGate) embedGate.style.display = 'none';
-      }, 500);
+        openDiagnosticModal();
+      }, 350);
     }).catch(function() {
       btn.disabled = false;
       errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
@@ -1521,7 +1660,7 @@
     });
   });
 
-  /* ---- Overlay sobre o formulário embutido (seção de contato) ---- */
+  /* Formulário embutido antigo: libera após o pré-cadastro e mantém na própria página. */
   var embedGate = document.getElementById('embedGate');
   var embedLeadForm = document.getElementById('embedLeadForm');
 
@@ -1542,7 +1681,8 @@
         statusEl.style.display = 'block';
         setTimeout(function() {
           embedGate.style.display = 'none';
-        }, 500);
+          btn.disabled = false;
+        }, 350);
       }).catch(function() {
         btn.disabled = false;
         errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
@@ -1550,6 +1690,17 @@
       });
     });
   }
+
+  /* Tally envia este evento ao site pai quando o formulário é finalizado. */
+  window.addEventListener('message', function(event) {
+    if (!event.data) return;
+    var data = event.data;
+    var eventName = data.event || data.type || (data.data && data.data.event);
+    if (eventName === 'Tally.FormSubmitted' || eventName === 'Tally.FormCompleted' || eventName === 'formSubmitted') {
+      diagnosticSuccess.classList.add('open');
+    }
+  });
+
 </script>
 
 <!--
