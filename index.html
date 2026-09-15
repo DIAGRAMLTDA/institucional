@@ -1531,13 +1531,7 @@
   });
 
   /* =========================================================
-     CAPTAÇÃO DE LEAD — bloqueia o diagnóstico até preencher
-     =========================================================
-     IMPORTANTE: para os dados caírem automaticamente na planilha
-     (https://docs.google.com/spreadsheets/d/126_TFlkAL3h6wF-IVsNsfz6z8fiIcUiKirMKzBxZpoA/edit)
-     é preciso publicar um Google Apps Script vinculado a ela e colar
-     a URL do "Web App" abaixo, em APPS_SCRIPT_URL. Veja o passo a
-     passo no final deste arquivo (comentário grande).
+     
   */
   var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQy2fDMn5AH9yTL59roW6KRpGAesj0ZtWS4k4eAbXtgAhoHmfqRjNArnez5UsNAe1B/exec";
   var LEAD_KEY = "diagram_lead_unlocked";
@@ -1681,12 +1675,7 @@
 
 <!--
   ============================================================
-  COMO LIGAR A CAPTAÇÃO DE LEADS NA PLANILHA DO GOOGLE SHEETS
-  ============================================================
-  1. Abra a planilha:
-     https://docs.google.com/spreadsheets/d/126_TFlkAL3h6wF-IVsNsfz6z8fiIcUiKirMKzBxZpoA/edit
-  2. Vá em Extensões > Apps Script.
-  3. Cole o código abaixo no editor (substitua o conteúdo padrão):
+ 
 
      function doPost(e) {
        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
