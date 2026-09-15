@@ -1673,22 +1673,5 @@
   });
 </script>
 
-<!--
-  ============================================================
- 
-
-     function doPost(e) {
-       var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-       var data = JSON.parse(e.postData.contents);
-       sheet.appendRow([
-         data.nome, data.empresa, data.telefone,
-         data.email, data.site, data.redes
-       ]);
-       return ContentService.createTextOutput("ok");
-     }
-
-
-  ============================================================
--->
 </body>
 </html>
