@@ -1478,9 +1478,53 @@
         <p class="lead-status"></p>
       </form>
     </div>
-    <iframe src="https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" title="Diagnóstico Gratuito — Diagram" loading="lazy"></iframe>
+    
   </div>
 </section>
+
+
+<!-- MODAL DO DIAGNÓSTICO — fica na própria página -->
+<div class="diagnostic-modal" id="diagnosticModal" aria-hidden="true">
+  <div class="diagnostic-modal-inner" role="dialog" aria-modal="true" aria-label="Diagnóstico Estratégico Gratuito">
+    <div class="diagnostic-modal-bar">
+      <div class="diagnostic-modal-title">DIAGRAM · Diagnóstico Estratégico Gratuito</div>
+      <button class="diagnostic-modal-close" id="diagnosticModalClose" type="button" aria-label="Fechar diagnóstico">×</button>
+    </div>
+
+    <div class="diagnostic-frame-wrap">
+      <iframe
+        id="diagnosticFrame"
+        title="Diagnóstico Estratégico Gratuito — DIAGRAM"
+        src="about:blank"
+        allow="fullscreen"
+        loading="eager">
+      </iframe>
+
+      <!-- Esta camada só aparece depois do envio do Tally -->
+      <div class="diagnostic-success" id="diagnosticSuccess" aria-hidden="true">
+        <div class="diagnostic-success-card">
+          <div class="diagnostic-success-mark">✓</div>
+          <div class="section-label">DIAGNÓSTICO RECEBIDO</div>
+          <h2>Obrigado por confiar na <span>DIAGRAM.</span></h2>
+          <p>
+            Para entendermos melhor o momento atual da sua empresa e identificarmos
+            oportunidades de crescimento, preparamos um Diagnóstico Estratégico Gratuito.
+            <br><br>
+            Assim que você concluir, nossa equipe irá analisar as informações e entrar
+            em contato para apresentar os principais pontos identificados.
+          </p>
+          <a
+            class="btn-primary"
+            href="https://tintim.link/whatsapp/b330379f-479c-4f01-b9cb-a5d3f3b78c4b/06496198-add4-4153-a4d8-88b6b6239386"
+            target="_blank"
+            rel="noopener">
+            CLIQUE E FALE CONOSCO →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div>
@@ -1583,7 +1627,7 @@
     });
   }
 
-  /* ---- Diagnóstico: sempre abre dentro da própria página ---- */
+  /* ---- Diagnóstico: abre dentro da própria página ---- */
   var pendingHref = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
   var leadBackdrop = document.getElementById('leadGateBackdrop');
   var globalLeadForm = document.getElementById('globalLeadForm');
@@ -1593,7 +1637,11 @@
   var diagnosticModalClose = document.getElementById('diagnosticModalClose');
 
   function openDiagnosticModal() {
-    diagnosticSuccess.classList.remove('open');
+    if (!diagnosticModal || !diagnosticFrame) return;
+    if (diagnosticSuccess) {
+      diagnosticSuccess.classList.remove('open');
+      diagnosticSuccess.setAttribute('aria-hidden', 'true');
+    }
     diagnosticFrame.src = pendingHref;
     diagnosticModal.classList.add('open');
     diagnosticModal.setAttribute('aria-hidden', 'false');
@@ -1601,31 +1649,45 @@
   }
 
   function closeDiagnosticModal() {
+    if (!diagnosticModal) return;
     diagnosticModal.classList.remove('open');
     diagnosticModal.setAttribute('aria-hidden', 'true');
-    diagnosticFrame.src = 'about:blank';
+    if (diagnosticFrame) diagnosticFrame.src = 'about:blank';
     document.body.style.overflow = '';
   }
 
   function openLeadGate() {
-    leadBackdrop.classList.add('open');
+    if (leadBackdrop) leadBackdrop.classList.add('open');
   }
   function closeLeadGate() {
-    leadBackdrop.classList.remove('open');
+    if (leadBackdrop) leadBackdrop.classList.remove('open');
   }
 
-  document.getElementById('leadGateClose').addEventListener('click', closeLeadGate);
-  leadBackdrop.addEventListener('click', function(e) {
-    if (e.target === leadBackdrop) closeLeadGate();
-  });
-  diagnosticModalClose.addEventListener('click', closeDiagnosticModal);
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && diagnosticModal.classList.contains('open')) closeDiagnosticModal(); });
+  var leadClose = document.getElementById('leadGateClose');
+  if (leadClose) leadClose.addEventListener('click', closeLeadGate);
+  if (leadBackdrop) {
+    leadBackdrop.addEventListener('click', function(e) {
+      if (e.target === leadBackdrop) closeLeadGate();
+    });
+  }
+  if (diagnosticModalClose) diagnosticModalClose.addEventListener('click', closeDiagnosticModal);
 
-  // Todos os botões/links de diagnóstico permanecem na página.
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && diagnosticModal && diagnosticModal.classList.contains('open')) {
+      closeDiagnosticModal();
+    }
+  });
+
+  /*
+   * Todos os CTAs que apontam para o Tally deixam de navegar para tally.so/r/...
+   * e passam a abrir o diagnóstico dentro do modal.
+   */
   document.querySelectorAll('a[href*="tally.so"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
-      pendingHref = 'https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1';
+      e.stopPropagation();
+      pendingHref = "https://tally.so/embed/wgg0Ml?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+
       if (leadUnlocked()) {
         openDiagnosticModal();
       } else {
@@ -1634,31 +1696,40 @@
     });
   });
 
-  globalLeadForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var btn = globalLeadForm.querySelector('button[type="submit"]');
-    var errorEl = globalLeadForm.querySelector('.lead-error');
-    var statusEl = globalLeadForm.querySelector('.lead-status');
-    errorEl.style.display = 'none';
-    btn.disabled = true;
-    var data = collectLeadData(globalLeadForm);
-    sendLeadToSheet(data).then(function() {
-      setLeadUnlocked();
-      statusEl.textContent = "Pronto! Abrindo o diagnóstico...";
-      statusEl.style.display = 'block';
-      setTimeout(function() {
-        closeLeadGate();
-        statusEl.style.display = 'none';
-        btn.disabled = false;
-        globalLeadForm.reset();
-        openDiagnosticModal();
-      }, 350);
-    }).catch(function() {
-      btn.disabled = false;
-      errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
-      errorEl.style.display = 'block';
+  if (globalLeadForm) {
+    globalLeadForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = globalLeadForm.querySelector('button[type="submit"]');
+      var errorEl = globalLeadForm.querySelector('.lead-error');
+      var statusEl = globalLeadForm.querySelector('.lead-status');
+
+      if (errorEl) errorEl.style.display = 'none';
+      if (btn) btn.disabled = true;
+
+      var data = collectLeadData(globalLeadForm);
+      sendLeadToSheet(data).then(function() {
+        setLeadUnlocked();
+        if (statusEl) {
+          statusEl.textContent = "Pronto! Abrindo o diagnóstico...";
+          statusEl.style.display = 'block';
+        }
+
+        setTimeout(function() {
+          closeLeadGate();
+          if (statusEl) statusEl.style.display = 'none';
+          if (btn) btn.disabled = false;
+          globalLeadForm.reset();
+          openDiagnosticModal();
+        }, 350);
+      }).catch(function() {
+        if (btn) btn.disabled = false;
+        if (errorEl) {
+          errorEl.textContent = "Não foi possível enviar agora. Tente novamente.";
+          errorEl.style.display = 'block';
+        }
+      });
     });
-  });
+  }
 
   /* Formulário embutido antigo: libera após o pré-cadastro e mantém na própria página. */
   var embedGate = document.getElementById('embedGate');
@@ -1691,13 +1762,23 @@
     });
   }
 
-  /* Tally envia este evento ao site pai quando o formulário é finalizado. */
+  /* Tally envia postMessage para a página pai quando o formulário é enviado. */
   window.addEventListener('message', function(event) {
+    if (event.origin !== 'https://tally.so') return;
     if (!event.data) return;
+
     var data = event.data;
     var eventName = data.event || data.type || (data.data && data.data.event);
-    if (eventName === 'Tally.FormSubmitted' || eventName === 'Tally.FormCompleted' || eventName === 'formSubmitted') {
-      diagnosticSuccess.classList.add('open');
+
+    if (
+      eventName === 'Tally.FormSubmitted' ||
+      eventName === 'Tally.FormCompleted' ||
+      eventName === 'formSubmitted'
+    ) {
+      if (diagnosticSuccess) {
+        diagnosticSuccess.classList.add('open');
+        diagnosticSuccess.setAttribute('aria-hidden', 'false');
+      }
     }
   });
 
